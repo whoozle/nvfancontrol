@@ -38,7 +38,7 @@ set_fan_control $GPU 1
 
 while true; do
 	TEMP=`get_temp $GPU`
-	SPEED=`get_fan_speed $FAN`
+	#SPEED=`get_fan_speed $FAN`
 	#echo "temperature $TEMP, speed: $SPEED"
 	if [[ $TEMP < $MINTEMP ]]; then 
 		#echo "MINIMUM"
