@@ -1,0 +1,50 @@
+#!/bin/bash
+
+GPU=0
+FAN=0
+MINTEMP=50
+MAXTEMP=75
+MINSPEED=17
+MAXSPEED=100
+
+function get_temp() {
+	nvidia-settings -tq "[gpu:$1]/GPUCoreTemp"
+}
+
+function get_fan_speed() {
+	nvidia-settings -tq "[fan:$1]/GPUCurrentFanSpeed"
+}
+
+function set_fan_speed() {
+	nvidia-settings -a "[fan:$2]/GPUCurrentFanSpeed=$3" > /dev/null
+}
+
+function set_fan_control() {
+	nvidia-settings -a "[gpu:$1]/GPUFanControlState=$2" > /dev/null
+}
+
+function cleanup() {
+	echo "restoring gpu settings..."
+	set_fan_control $GPU 0
+	exit
+}
+
+trap 'cleanup' TERM INT QUIT PIPE 
+set_fan_control $GPU 1
+
+while true; do
+	TEMP=`get_temp $GPU`
+	SPEED=`get_fan_speed $FAN`
+	#echo "temperature $TEMP, speed: $SPEED"
+	if [[ $TEMP < $MINTEMP ]]; then 
+		#echo "MINIMUM"
+		SPEED=$MINSPEED
+	elif [[ $TEMP > $MAXTEMP ]]; then
+		SPEED=$MAXSPEED
+	else
+		SPEED=$(( ($TEMP - $MINTEMP) * ($MAXSPEED - $MINSPEED) / ($MAXTEMP - $MINTEMP) + $MINSPEED ))
+	fi
+	#echo "new speed: $SPEED"
+	set_fan_speed $GPU $FAN $SPEED
+	sleep 1
+done
