@@ -1,0 +1,26 @@
+nvfancontrol is simple script used for controlling speed of nvidia's fans.
+
+Before we start, please be careful, because incorrect values could damage your
+hardware, so use this script at your own risk.
+
+First of all, you need to switch on "CoolBits" in xorg.conf allowing you
+access to hidden features of nvidia's drivers. You might turn on the third
+bit (4), so if you already had value "1", you need add 4 to it and use "5".
+If you don't have "Coolbits", just put the following into "Device" or "Screen" 
+section of xorg.conf.
+
+    Option         "Coolbits" "4"
+
+Then, restart X11, and launch nvidia-settings. Check that coolbits actually work
+for you: you will see fan speed slider in "Thermal Settings".
+
+Please check minimal temperature and speed values for your fan using this slider
+and adjust MINSPEED=/MINTEMP= values in nvfancontrol file.
+
+You might adjust MAXTEMP/MAXSPEED too, but it's not recommended and could be
+dangerous.
+
+I noticed that my driver rolls fan with 27% speed and the temperature stays the
+same as for minimal speed (17% for my card).
+
+Have fun. :)
