@@ -24,7 +24,7 @@ function set_fan_control() {
 }
 
 function cleanup() {
-	echo "restoring gpu settings..."
+#	echo "restoring gpu settings..."
 	set_fan_control $GPU 0
 	exit
 }
