@@ -11,8 +11,8 @@ section of xorg.conf.
 
     Option         "Coolbits" "4"
 
-Then, restart X11, and launch nvidia-settings. Check that coolbits actually work
-for you: you will see fan speed slider in "Thermal Settings".
+Then restart X11, and launch nvidia-settings. Check that coolbits actually work
+for you: you will see fan speed checkbox and slider under "Thermal Settings".
 
 Please check minimal temperature and speed values for your fan using this slider
 and adjust MINSPEED=/MINTEMP= values in nvfancontrol file.
@@ -22,5 +22,12 @@ dangerous.
 
 I noticed that my driver rolls fan with 27% speed and the temperature stays the
 same as for minimal speed (17% for my card).
+
+As you finish the setup, try running ./nvfancontrol. If everything's all right,
+quit it with ctrl-c and launch ./nvfancontrold.
+
+You could launch nvfancontrold from any directory without changing current
+directory like /home/xxx/nvfancontrol/nvfancontrold or even put it in autorun of
+your favourite window manager.
 
 Have fun. :)
