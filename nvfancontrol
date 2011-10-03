@@ -8,24 +8,28 @@ MINSPEED=17
 MAXSPEED=100
 
 function get_temp() {
-	nvidia-settings -tq "[gpu:$1]/GPUCoreTemp"
+	nvidia-settings -tq "[gpu:$1]/GPUCoreTemp" || die
 }
 
 function get_fan_speed() {
-	nvidia-settings -tq "[fan:$1]/GPUCurrentFanSpeed"
+	nvidia-settings -tq "[fan:$1]/GPUCurrentFanSpeed" || die
 }
 
 function set_fan_speed() {
-	nvidia-settings -a "[fan:$2]/GPUCurrentFanSpeed=$3" > /dev/null
+	nvidia-settings -a "[fan:$2]/GPUCurrentFanSpeed=$3" >/dev/null || die
 }
 
 function set_fan_control() {
-	nvidia-settings -a "[gpu:$1]/GPUFanControlState=$2" > /dev/null
+	nvidia-settings -a "[gpu:$1]/GPUFanControlState=$2" >/dev/null || die
 }
 
 function cleanup() {
 #	echo "restoring gpu settings..."
 	set_fan_control $GPU 0
+	exit
+}
+function die() {
+	cleanup
 	exit
 }
 
